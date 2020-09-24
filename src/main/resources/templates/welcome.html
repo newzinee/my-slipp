@@ -1,11 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-</head>
-<body>
-{{name}}, Hello World! <br/>
-나이는 {{age}}!
-</body>
-</html>
+Hello {{name}}
+You have just won {{value}} dollars!
+{{#in_ca}}
+Well, {{taxed_value}} dollars, after taxes.
+{{/in_ca}}
+{{^in_ca}}
+in_ca is false;
+{{/in_ca}}
+
+* {{name}}
+* {{company}}
+* {{{company}}}
+
+{{#repo}}
+<b>{{name}}</b>
+{{/repo}}
+
+{{! ignore me  ! as comment}}
