@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-{{ > /include/head }}
+{{ > /include/header }}
 </head>
 <body>
 {{ > /include/navigation }}
@@ -16,15 +16,15 @@
                 </tr>
               </thead>
               <tbody>
-              {{#users}}
-              <tr>
-                  <th scope="row">{{id}}</th>
-                  <td>{{userId}}</td>
-                  <td>{{name}}</td>
-                  <td>{{email}}</td>
-                  <td><a href="#" class="btn btn-success" role="button">수정</a></td>
-              </tr>
-              {{/users}}
+                  {{#users}}
+                  <tr>
+                      <th scope="row">{{id}}</th>
+                      <td>{{userId}}</td>
+                      <td>{{name}}</td>
+                      <td>{{email}}</td>
+                      <td><a href="/users/{{id}}/form" class="btn btn-success" role="button">수정</a></td>
+                  </tr>
+                  {{/users}}
               </tbody>
           </table>
         </div>
