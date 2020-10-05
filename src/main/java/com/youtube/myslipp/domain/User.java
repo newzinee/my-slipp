@@ -47,6 +47,5 @@ public class User {
         this.password = newUser.password;
         this.email = newUser.email;
         this.name = newUser.name;
-        this.userId = newUser.userId;
     }
 }
