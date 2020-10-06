@@ -16,7 +16,7 @@ public class UserController {
 
     @GetMapping("/form")
     public String form() {
-        return "/user/form";
+        return "user/form";
     }
 
     @PostMapping("")
@@ -29,14 +29,14 @@ public class UserController {
     @GetMapping("")
     public String list(Model model) {
         model.addAttribute("users", userRepository.findAll());
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/{id}/form")
     public String updateForm(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).get();
         model.addAttribute("user", user);
-        return "/user/updateForm";
+        return "user/updateForm";
     }
 
     @PutMapping("/{id}")
