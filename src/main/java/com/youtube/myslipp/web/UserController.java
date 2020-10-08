@@ -73,4 +73,11 @@ public class UserController {
         userRepository.save(user);
         return "redirect:/users";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+
+        session.removeAttribute("user");
+        return "redirect:/";
+    }
 }
