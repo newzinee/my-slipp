@@ -18,6 +18,9 @@ mustache 에서 ~~{{ > /include/header }}~~ 가 아니라 `{{ > include/header }
 ./mvnw spring-boot:run &
 ```
 
+### 리펙토링
+가능한 데이터를 꺼내지 말고(getId..), 객체한테 메시지 보내며 물어봐. 
+
  
 
  

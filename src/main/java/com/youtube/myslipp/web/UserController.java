@@ -30,13 +30,13 @@ public class UserController {
             System.out.println("Login Failure!");
             return "redirect:/users/loginForm";
         }
-        if(!password.equals(user.getPassword())) {
+        if(!user.matchPassword(password)) {
             System.out.println("Login Failure!");
             return "redirect:/users/loginForm";
         }
 
         System.out.println("Login Success!");
-        session.setAttribute("sessionUser", user);
+        session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 
         return "redirect:/";
     }
@@ -61,15 +61,7 @@ public class UserController {
 
     @GetMapping("/{id}/form")
     public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
-        Object tempUser = session.getAttribute("sessionUser");
-        if(tempUser == null) {
-            return "redirect:/users/loginForm";
-        }
-
-        User sessionUser = (User) tempUser;
-        if(!id.equals(sessionUser.getId())) {
-            throw new IllegalStateException("자신의 정보만 수정할 수 있습니다.");
-        }
+        if (!checkUser(id, session)) return "redirect:/users/loginForm";
 
         User user = userRepository.findById(id).get();
         model.addAttribute("user", user);
@@ -78,15 +70,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public String update(@PathVariable Long id, User updatedUser, HttpSession session) {
-        Object tempUser = session.getAttribute("sessionUser");
-        if(tempUser == null) {
-            return "redirect:/users/loginForm";
-        }
-
-        User sessionUser = (User) tempUser;
-        if(!id.equals(sessionUser.getId())) {
-            throw new IllegalStateException("자신의 정보만 수정할 수 있습니다.");
-        }
+        if (!checkUser(id, session)) return "redirect:/users/loginForm";
 
         User user = userRepository.findById(id).get();
         user.update(updatedUser);
@@ -94,10 +78,22 @@ public class UserController {
         return "redirect:/users";
     }
 
+    private boolean checkUser(@PathVariable Long id, HttpSession session) {
+        if (HttpSessionUtils.isLoginUser(session)) {
+            return true;
+        }
+
+        User sessionUser = HttpSessionUtils.getUserFromSession(session);
+        if (!sessionUser.matchId(id)) {
+            throw new IllegalStateException("자신의 정보만 수정할 수 있습니다.");
+        }
+        return false;
+    }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
 
-        session.removeAttribute("sessionUser");
+        session.removeAttribute(HttpSessionUtils.USER_SESSION_KEY);
         return "redirect:/";
     }
 }

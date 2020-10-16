@@ -53,4 +53,18 @@ public class User {
         this.email = newUser.email;
         this.name = newUser.name;
     }
+
+    public boolean matchPassword(String newPassword) {
+        if (newPassword == null) {
+            return false;
+        }
+        return newPassword.equals(password);
+    }
+
+    public boolean matchId(Long newId) {
+        if(newId == null) {
+            return false;
+        }
+        return newId.equals(id);
+    }
 }
