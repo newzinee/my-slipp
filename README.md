@@ -88,6 +88,11 @@ vi server.xml
 ```
 ./mvnw clean package 
 ```
+
+### 데이터 전달
+객체에서 값을 꺼내서 전달하는 것보다 객체로 전달하는 것이 더 낫다. 
+
+~~sessionUser.getId()~~ -> sessionUser
   
  
  
