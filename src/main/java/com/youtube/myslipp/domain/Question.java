@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 @Entity
 public class Question {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -38,5 +38,9 @@ public class Question {
     public void update(String title, String contents) {
         this.title = title;
         this.contents = contents;
+    }
+
+    public boolean isSameWriter(User loginUser) {
+        return this.writer.equals(loginUser);
     }
 }
