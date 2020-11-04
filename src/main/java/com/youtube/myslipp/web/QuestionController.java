@@ -5,10 +5,7 @@ import com.youtube.myslipp.domain.QuestionRepository;
 import com.youtube.myslipp.domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,8 +14,10 @@ import javax.servlet.http.HttpSession;
 public class QuestionController {
 
     private final QuestionRepository questionRepository;
-    public QuestionController(QuestionRepository questionRepository) {
+    private final QuestionService questionService;
+    public QuestionController(QuestionRepository questionRepository, QuestionService questionService) {
         this.questionRepository = questionRepository;
+        this.questionService = questionService;
     }
 
     @GetMapping("/form")
@@ -48,4 +47,22 @@ public class QuestionController {
         return "qna/show";
     }
 
+    @GetMapping("/{id}/form")
+    public String updateForm(@PathVariable Long id, Model model) {
+        model.addAttribute("question", questionRepository.findById(id).orElseThrow());
+        return "qna/updateForm";
+    }
+
+    @PutMapping("/{id}")
+    public String update(@PathVariable Long id, String title, String contents) {
+        questionService.update(id, title, contents);
+        return String.format("redirect:/questions/%d", id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
+        Question question = questionRepository.findById(id).orElseThrow();
+        questionRepository.delete(question);
+        return "redirect:/";
+    }
 }
