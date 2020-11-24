@@ -37,8 +37,36 @@ function onError() {
 function onSuccess(data, status) {
   console.log(data);
   let answerTemplate = $("#answerTemplate").html();
-  let template = answerTemplate.format(data.writer.userId, data.formattedCreateDate, data.contents, data.id, data.id);
+  let template = answerTemplate.format(data.writer.userId, data.formattedCreateDate, data.contents, data.id, data.question.id);
   $(".qna-comment-slipp-articles").prepend(template);
 
   $(".answer-write textarea").val('');
+}
+
+$(document).on('click', '.link-delete-article', deleteAnswer);
+
+function deleteAnswer(e) {
+  e.preventDefault();
+
+  let deleteBtn = $(this);
+  let url = deleteBtn.attr("href");
+  console.log("url: " + url);
+
+  $.ajax({
+    type: 'delete',
+    url: url,
+    dataType: 'json',
+    error: function(xhr, status) {
+      console.log('error');
+    },
+    success: function(data, status) {
+      console.log('success');
+      console.log(data);
+      if(data.valid) {
+        deleteBtn.closest("article").remove();
+      } else {
+        alert(data.errorMessage);
+      }
+    }
+  });
 }
