@@ -20,4 +20,10 @@ public class QuestionService {
         Question question = questionRepository.findById(id).orElseThrow();
         question.update(title, contents);
     }
+
+    @Transactional
+    public void minusCountOfAnswer(final Long questionId) {
+        Question question = questionRepository.findById(questionId).orElseThrow();
+        question.deleteAnswer();
+    }
 }

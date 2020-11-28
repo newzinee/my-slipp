@@ -11,10 +11,12 @@ public class ApiAnswerController {
 
     private AnswerRepository answerRepository;
     private QuestionRepository questionRepository;
+    private QuestionService questionService;
 
-    public ApiAnswerController(AnswerRepository answerRepository, QuestionRepository questionRepository) {
+    public ApiAnswerController(AnswerRepository answerRepository, QuestionRepository questionRepository, QuestionService questionService) {
         this.answerRepository = answerRepository;
         this.questionRepository = questionRepository;
+        this.questionService = questionService;
     }
 
     @PostMapping("")
@@ -26,6 +28,7 @@ public class ApiAnswerController {
         User loginUser = HttpSessionUtils.getUserFromSession(session);
         Question question = questionRepository.findById(questionId).orElseThrow();
         Answer answer = new Answer(loginUser, question, contents);
+        question.addAnswer();
         return answerRepository.save(answer);
     }
 
@@ -42,6 +45,7 @@ public class ApiAnswerController {
         }
 
         answerRepository.deleteById(id);
+        questionService.minusCountOfAnswer(questionId);
         return Result.ok();
     }
 }
