@@ -3,16 +3,10 @@ package com.youtube.myslipp.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
-public class Question {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty
-    private Long id;
+public class Question extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
@@ -28,8 +22,6 @@ public class Question {
     @JsonProperty
     private Integer countOfAnswer = 0;
 
-    private LocalDateTime createDate;
-
     @OneToMany(mappedBy = "question")
     @OrderBy("id DESC")
     private List<Answer> answers;
@@ -41,14 +33,6 @@ public class Question {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createDate = LocalDateTime.now();
-    }
-
-    public String getFormattedCreateDate() {
-        if(createDate == null) {
-            return "";
-        }
-        return createDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
     }
 
     public void update(String title, String contents) {

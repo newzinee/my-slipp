@@ -3,15 +3,11 @@ package com.youtube.myslipp.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.*;
-import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 @Entity
-public class User {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty
-    private Long id;
+public class User extends AbstractEntity{
 
     @Column(nullable = false, length = 20, unique = true)
     @JsonProperty
@@ -42,10 +38,6 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -53,6 +45,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
+                super.toString() +
                 "userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
@@ -77,19 +70,7 @@ public class User {
         if(newId == null) {
             return false;
         }
-        return newId.equals(id);
+        return newId.equals(getId());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id.equals(user.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
