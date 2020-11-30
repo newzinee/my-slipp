@@ -94,5 +94,7 @@ vi server.xml
 
 ~~sessionUser.getId()~~ -> sessionUser
   
- 
- 
+### swagger-ui
+아래 URL로 swagger-ui 접근 가능. 간단한 수동 테스트도 가능
+
+http://localhost:8081/swagger-ui.html
