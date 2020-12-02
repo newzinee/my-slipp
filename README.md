@@ -98,3 +98,68 @@ vi server.xml
 아래 URL로 swagger-ui 접근 가능. 간단한 수동 테스트도 가능
 
 http://localhost:8081/swagger-ui.html
+
+### 배포 순서
+- git pull
+- mvnw clean package
+- ./shutdown.sh (tomcat 서버 종료)
+- tomcat/webapps/ROOT 삭제
+- 빌드한 산출물 tomcat/webapps/ROOT로 이동
+- ./startup.sh (tomcat 서버 시작)
+
+### 쉘 스크립트를 만들어서 배포 자동화
+```
+~ $ vi deploy.sh
+```
+
+잘 되는지 확인
+```
+#!/bin/bash
+
+echo "Welcome My Shell!!"
+pwd
+```
+
+deploy.sh 에 실행권한 주기
+```shell
+$ chmod 755 deploy.sh
+```
+
+deploy.sh 실행
+```shell
+$ ./deploy.sh
+```
+
+실행 결과 
+```shell
+Welcome My Shell!!
+/home/yj
+```
+
+소스 수정
+```shell
+#!/bin/bash
+
+echo "Welcome My Shell!!"
+
+# 변수 생성
+TOMCAT_HOME=~/tomcat
+
+cd ~/my-slipp
+git pull
+
+./mvnw clean package
+
+cd $TOMCAT_HOME/bin
+./shutdown.sh
+
+cd $TOMCAT_HOME/webapps
+rm -rf ROOT
+
+mv ~/my-slipp/target/my-slipp-1.0/ $TOMCAT_HOME/webapps/ROOT
+
+cd $TOMCAT_HOME/bin
+./startup.sh
+
+tail -500f $TOMCAT_HOME/logs/catalina.out
+```
