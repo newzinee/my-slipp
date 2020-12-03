@@ -163,3 +163,5 @@ cd $TOMCAT_HOME/bin
 
 tail -500f $TOMCAT_HOME/logs/catalina.out
 ```
+
+Ite's over.
